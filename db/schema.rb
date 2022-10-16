@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_11_223746) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_16_171728) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "messages", force: :cascade do |t|
+    t.text "description"
+    t.bigint "user_sent_id"
+    t.bigint "user_received_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_received_id"], name: "index_messages_on_user_received_id"
+    t.index ["user_sent_id"], name: "index_messages_on_user_sent_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "provider", default: "email", null: false
@@ -39,4 +49,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_11_223746) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  add_foreign_key "messages", "users", column: "user_received_id"
+  add_foreign_key "messages", "users", column: "user_sent_id"
 end
