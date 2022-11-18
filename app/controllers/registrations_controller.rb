@@ -1,11 +1,10 @@
-class RegistrationController < ApplicationController
+class RegistrationsController < ApplicationController
   def user_registration
     begin
       raw, token = Devise.token_generator.generate(User, :confirmation_token)
       user = User.create!({
                             name: params[:name],
                             email: params[:email],
-                            phone: params[:phone],
                             password: params[:password],
                             confirmation_token: token,
                             confirmation_sent_at: Date.current,

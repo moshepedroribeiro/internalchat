@@ -56,11 +56,11 @@
     <span>Para confirmar seu usuário, só clicar no botão abaixo: ".</span>
   </div>
 
-  <%# if Rails.env.development %>
-  <a href="<%= "http://localhost:3000/confirm_user?token=#{@token}" %>" target="_blank">Confirmar usuário</a>
-  <%# else %>
-  <!--        <a href="<%#= "http://localhost:3000/recovery_password/#{@token}" %>">Recuperar senha</a>-->
-  <%# end %>
+  <% if Rails.env.development? %>
+    <a href="<%= "http://localhost:3000/confirm_user?token=#{@token}" %>" target="_blank">Confirmar usuário</a>
+  <% else %>
+    <a href="<%= "http://localhost:3000/confirm_user?token=#{@token}" %>" target="_blank">Confirmar usuário</a>
+  <% end %>
 </div>
 </body>
 </html>
