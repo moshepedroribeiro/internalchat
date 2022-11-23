@@ -1,74 +1,60 @@
-require "active_support/core_ext/integer/time"
+# frozen_string_literal: true
 
-Rails.application.configure do
-  # Settings specified here will take precedence over those in config/application.rb.
+DeviseTokenAuth.setup do |config|
+  # By default the authorization headers will change after each request. The
+  # client is responsible for keeping track of the changing tokens. Change
+  # this to false to prevent the Authorization header from changing after
+  # each request.
+  config.change_headers_on_each_request = true
 
-  # In the development environment your application's code is reloaded any time
-  # it changes. This slows down response time but is perfect for development
-  # since you don't have to restart the web server when you make code changes.
-  config.cache_classes = false
+  # By default, users will need to re-authenticate after 2 weeks. This setting
+  # determines how long tokens will remain valid after they are issued.
+  config.token_lifespan = 1.weeks
 
-  # Do not eager load code on boot.
-  config.eager_load = false
+  # Limiting the token_cost to just 4 in testing will increase the performance of
+  # your test suite dramatically. The possible cost value is within range from 4
+  # to 31. It is recommended to not use a value more than 10 in other environments.
+  config.token_cost = Rails.env.test? ? 4 : 10
 
-  # Show full error reports.
-  config.consider_all_requests_local = true
+  # Sets the max number of concurrent devices per user, which is 10 by default.
+  # After this limit is reached, the oldest tokens will be removed.
+  # config.max_number_of_devices = 10
 
-  # Enable server timing
-  config.server_timing = true
+  # Sometimes it's necessary to make several requests to the API at the same
+  # time. In this case, each request in the batch will need to share the same
+  # auth token. This setting determines how far apart the requests can be while
+  # still using the same auth token.
+  config.batch_request_buffer_throttle = 5.seconds
 
-  # Enable/disable caching. By default caching is disabled.
-  # Run rails dev:cache to toggle caching.
-  if Rails.root.join("tmp/caching-dev.txt").exist?
-    config.cache_store = :memory_store
-    config.public_file_server.headers = {
-      "Cache-Control" => "public, max-age=#{2.days.to_i}"
-    }
-  else
-    config.action_controller.perform_caching = false
+  # This route will be the prefix for all oauth2 redirect callbacks. For
+  # example, using the default '/omniauth', the github oauth2 provider will
+  # redirect successful authentications to '/omniauth/github/callback'
+  # config.omniauth_prefix = "/omniauth"
 
-    config.cache_store = :null_store
-  end
+  # By default sending current password is not needed for the password update.
+  # Uncomment to enforce current_password param to be checked before all
+  # attribute updates. Set it to :password if you want it to be checked only if
+  # password is updated.
+  # config.check_current_password_before_update = :attributes
 
-  # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :local
+  # By default we will use callbacks for single omniauth.
+  # It depends on fields like email, provider and uid.
+  # config.default_callbacks = true
 
-  # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  # Makes it possible to change the headers names
+  # config.headers_names = {:'access-token' => 'access-token',
+  #                        :'client' => 'client',
+  #                        :'expiry' => 'expiry',
+  #                        :'uid' => 'uid',
+  #                        :'token-type' => 'token-type' }
 
-  config.action_mailer.perform_caching = false
+  # By default, only Bearer Token authentication is implemented out of the box.
+  # If, however, you wish to integrate with legacy Devise authentication, you can
+  # do so by enabling this flag. NOTE: This feature is highly experimental!
+  # config.enable_standard_devise_support = false
 
-  config.action_mailer.smtp_settings = {
-    address: 'smtp.gmail.com',
-    port: 587,
-    authentication: "plain",
-    enable_starttls_auto: true,
-    user_name: Rails.application.credentials[:email],
-    password: Rails.application.credentials[:password],
-  }
-
-  # Print deprecation notices to the Rails logger.
-  config.active_support.deprecation = :log
-
-  # Raise exceptions for disallowed deprecations.
-  config.active_support.disallowed_deprecation = :raise
-
-  # Tell Active Support which deprecation messages to disallow.
-  config.active_support.disallowed_deprecation_warnings = []
-
-  # Raise an error on page load if there are pending migrations.
-  config.active_record.migration_error = :page_load
-
-  # Highlight code that triggered database queries in logs.
-  config.active_record.verbose_query_logs = true
-
-
-  # Raises error for missing translations.
-  # config.i18n.raise_on_missing_translations = true
-
-  # Annotate rendered view with file names.
-  # config.action_view.annotate_rendered_view_with_filenames = true
-
-  # Uncomment if you wish to allow Action Cable access from any origin.
-  # config.action_cable.disable_request_forgery_protection = true
+  # By default DeviseTokenAuth will not send confirmation email, even when including
+  # devise confirmable module. If you want to use devise confirmable module and
+  # send email, set it to true. (This is a setting for compatibility)
+  # config.send_confirmation_email = true
 end

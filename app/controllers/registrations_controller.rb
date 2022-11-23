@@ -11,7 +11,7 @@ class RegistrationsController < ApplicationController
                             password_confirmation: params[:password_confirmation]
                           })
 
-      UserMailer.send_confirmation_user_email(user.email, user.name, user.confirmation_token).deliver_now
+      UserMailer.send_confirmation_user_email(user.email, user.name, user.confirmation_token).deliver_now!
 
       render json: {user: user}
     rescue => e
