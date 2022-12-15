@@ -5,62 +5,27 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-  <style>
-      .container {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          width: 100%;
-      }
-
-      .content {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          font-family: 'Roboto', sans-serif;
-          font-size: 14px;
-          color: #5f6368;
-      }
-
-      .content strong, .content span {
-          font-family: 'Roboto', sans-serif;
-          font-size: 14px;
-          color: #5f6368;
-          margin-top: 12px;
-          margin-bottom: 12px;
-      }
-
-      a {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 150px;
-          height: 60px;
-          background-color: #00b300;
-          border-radius: 10px;
-          text-decoration: none;
-          color: #FFFFFF;
-          font-family: 'Roboto', sans-serif;
-          font-size: 16px;
-          font-weight: 700;
-      }
-  </style>
 </head>
 
 <body>
-<div class="container">
-  <div class="content">
-    <strong>Olá <%= @name %></strong>
-    <span>Para confirmar seu usuário, só clicar no botão abaixo: ".</span>
-  </div>
+<table style="border: 0;">
+  <tr>
+    <td><strong>Olá <%= @name %></strong></td>
+  </tr>
 
-  <% if Rails.env.development? %>
-    <a href="<%= "http://localhost:3000/confirm_user?token=#{@token}" %>" target="_blank">Confirmar usuário</a>
-  <% else %>
-    <a href="<%= "http://localhost:3000/confirm_user?token=#{@token}" %>" target="_blank">Confirmar usuário</a>
-  <% end %>
-</div>
+  <tr>
+    <td><span>Para confirmar seu usuário, só clicar no botão abaixo: ".</span></td>
+  </tr>
+
+  <tr>
+    <td>
+      <% if Rails.env.development? %>
+        <a style="display: flex;padding: 8px;border-radius: 4px;text-decoration: none;font-family: 'Roboto', sans-serif;font-size: 14px;margin-top: 12px;margin-bottom: 12px;color: #FFFFFF;background-color: #00b300;" href="<%= "http://localhost:3000/confirm_user?token=#{@token}"%>" target="_blank"><strong>Confirmar usuário</strong></a>
+      <% else %>
+        <a style="display: flex;padding: 8px;border-radius: 4px;text-decoration: none;font-family: 'Roboto', sans-serif;font-size: 14px;margin-top: 12px;margin-bottom: 12px;color: #FFFFFF;background-color: #00b300;" href="<%= "http://localhost:3000/confirm_user?token=#{@token}"%>" target="_blank"><strong>Confirmar usuário</strong></a>
+      <% end %>
+    </td>
+  </tr>
+</table>
 </body>
 </html>
