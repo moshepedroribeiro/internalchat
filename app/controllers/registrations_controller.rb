@@ -71,6 +71,8 @@ class RegistrationsController < ApplicationController
         else
           render json: {status: 401}
         end
+      else
+        render json: {status: 401}
       end
     rescue => e
       puts e
